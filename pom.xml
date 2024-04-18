@@ -13,7 +13,9 @@
     <artifactId>bookstore-microservices-app</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+
     <modules>
+        <module>catalog-service</module>
     </modules>
 
     <properties>
