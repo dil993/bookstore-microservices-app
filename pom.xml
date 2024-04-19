@@ -22,6 +22,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+<!--
+        <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+-->
     </properties>
 
 
@@ -39,6 +42,29 @@
                     </excludes>
                 </configuration>
             </plugin>
+<!--            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                	<version>${spotless-maven-plugin.version}</version>
+                <configuration>
+                    <java>
+                        <importOrder/>
+                        <removeUnusedImports/>
+                        <palantirJavaFormat>
+                            <version>2.30.0</version>
+                        </palantirJavaFormat>
+                        <formatAnnotations/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
     </build>
 
