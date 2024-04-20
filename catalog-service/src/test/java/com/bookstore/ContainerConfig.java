@@ -13,7 +13,7 @@ public class ContainerConfig {
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
         return new PostgreSQLContainer<>(
-                DockerImageName.parse("postgres:16-alpine"));
+                DockerImageName.parse("postgres:latest"));
     }
 
 }
