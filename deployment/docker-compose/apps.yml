@@ -2,7 +2,7 @@ version: "3.8"
 name: 'bookstore-microservices-app'
 services:
   catalog-db:
-    image: dileep05/bookstore-catalog-service
+    image: dileep/bookstore-catalog-service:latest
     container_name: catalog-service
     environment:
       - DB_USERNAME=postgres
