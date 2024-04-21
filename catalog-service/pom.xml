@@ -12,7 +12,7 @@
 	<artifactId>catalog-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>catalog-service</name>
-	<description>Catalog service description</description>
+	<description>Catalog service app using docker</description>
 	<properties>
 		<java.version>21</java.version>
 		<dockerImageName>dileep/bookstore-${project.artifactId}</dockerImageName>
