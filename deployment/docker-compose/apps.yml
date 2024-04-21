@@ -2,9 +2,10 @@ version: "3.8"
 name: 'bookstore-microservices-app'
 services:
   catalog-db:
-    image: dileep/bookstore-catalog-service:latest
+    image: dileep05/bookstore-catalog-service
     container_name: catalog-service
     environment:
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_URL=jdbc:postgresql://catalog-db:5432/postgres
