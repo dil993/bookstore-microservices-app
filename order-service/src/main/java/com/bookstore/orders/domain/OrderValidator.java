@@ -11,7 +11,7 @@ public class OrderValidator {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderValidator.class);
 
-    private final ProductServiceClient  productServiceClient;
+    private final ProductServiceClient productServiceClient;
 
     OrderValidator(ProductServiceClient productServiceClient) {
         this.productServiceClient = productServiceClient;
@@ -20,6 +20,7 @@ public class OrderValidator {
 
     public void validateOrder(OrderEntity order) {
         for (OrderItemEntity item : order.getItems()) {
-            productServiceClient.getProduct(item.getCode());
+            productServiceClient.getProductByCode(item.getCode());
         }
+    }
 }
