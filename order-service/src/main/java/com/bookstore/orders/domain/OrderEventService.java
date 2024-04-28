@@ -1,7 +1,6 @@
 package com.bookstore.orders.domain;
 
-import com.bookstore.orders.domain.models.OrderCreatedEvent;
-import com.bookstore.orders.domain.models.OrderEventType;
+import com.bookstore.orders.domain.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -41,6 +40,35 @@ public class OrderEventService {
         logger.info("Saved order event: {}", orderEvent);
     }
 
+    void saveDeliveredOrder(OrderDeliveredEvent event) {
+        OrderEventEntity orderEvent = new OrderEventEntity();
+        orderEvent.setEventId(event.eventId());
+        orderEvent.setEventType(OrderEventType.ORDER_DELIVERED);
+        orderEvent.setOrderNumber(event.orderNumber());
+        orderEvent.setCreatedAt(event.createdAt());
+        orderEvent.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEvent);
+    }
+
+    void saveCancelOrder(OrderCancelledEvent event) {
+        OrderEventEntity orderEvent = new OrderEventEntity();
+        orderEvent.setEventId(event.eventId());
+        orderEvent.setEventType(OrderEventType.ORDER_CANCELLED);
+        orderEvent.setOrderNumber(event.orderNumber());
+        orderEvent.setCreatedAt(event.createdAt());
+        orderEvent.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEvent);
+    }
+
+    void saveErrorOrder(OrderErrorEvent event) {
+        OrderEventEntity orderEvent = new OrderEventEntity();
+        orderEvent.setEventId(event.eventId());
+        orderEvent.setEventType(OrderEventType.ORDER_PROCESSING_FAILED);
+        orderEvent.setOrderNumber(event.orderNumber());
+        orderEvent.setCreatedAt(event.createdAt());
+        orderEvent.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEvent);
+    }
     private String toJsonPayload(Object object) {
         try {
             return objectMapper.writeValueAsString(object);
@@ -66,6 +94,18 @@ public class OrderEventService {
             case ORDER_CREATED:
                 OrderCreatedEvent orderCreatedEvent = fromJsonPayload(event.getPayload(), OrderCreatedEvent.class);
                 orderEventPublisher.publish(orderCreatedEvent);
+                break;
+            case ORDER_DELIVERED:
+                OrderDeliveredEvent orderDeliveredEvent = fromJsonPayload(event.getPayload(), OrderDeliveredEvent.class);
+                orderEventPublisher.publish(orderDeliveredEvent);
+                break;
+            case ORDER_CANCELLED:
+                OrderCancelledEvent orderCancelledEvent = fromJsonPayload(event.getPayload(), OrderCancelledEvent.class);
+                orderEventPublisher.publish(orderCancelledEvent);
+                break;
+            case ORDER_PROCESSING_FAILED:
+                OrderErrorEvent orderErrorEvent = fromJsonPayload(event.getPayload(), OrderErrorEvent.class);
+                orderEventPublisher.publish(orderErrorEvent);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + eventType);

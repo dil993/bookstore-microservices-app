@@ -23,7 +23,7 @@ class OrderEntity {
     @Column(name = "username", nullable = false)
     private String userName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order",fetch = FetchType.EAGER)
     private Set<OrderItemEntity> items;
 
     @Embedded
