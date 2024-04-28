@@ -3,6 +3,7 @@ package com.bookstore.orders.web.controller;
 import com.bookstore.orders.domain.OrderService;
 import com.bookstore.orders.domain.SecurityService;
 import com.bookstore.orders.domain.models.CreateOrderRequest;
+import com.bookstore.orders.domain.models.CreateOrderResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,11 @@ class OrderController {
     }
 
     @PostMapping
-    public String createOrder(@RequestBody @Valid CreateOrderRequest request) {
+    public CreateOrderResponse createOrder(@RequestBody @Valid CreateOrderRequest request) {
         log.info("Creating order for user: {}", securityService.getLoginUserName());
-        return orderService.createOrder(securityService.getLoginUserName(),request);
+        return orderService.createOrder(
+                securityService.getLoginUserName(),
+                request);
     }
 
 }
