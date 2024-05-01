@@ -18,7 +18,7 @@ public class OrderProcessingJob {
         this.orderService = orderService;
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/15 * * * * *")
    // @SchedulerLock(name = "processNewOrders")
     public void processNewOrders() {
        // LockAssert.assertLocked();

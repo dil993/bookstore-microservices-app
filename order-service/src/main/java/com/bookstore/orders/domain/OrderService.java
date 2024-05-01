@@ -1,15 +1,13 @@
 package com.bookstore.orders.domain;
 
-import com.bookstore.orders.domain.models.CreateOrderRequest;
-import com.bookstore.orders.domain.models.CreateOrderResponse;
-import com.bookstore.orders.domain.models.OrderCreatedEvent;
-import com.bookstore.orders.domain.models.OrderStatus;
+import com.bookstore.orders.domain.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderService {
@@ -26,6 +24,12 @@ public class OrderService {
         this.orderValidator = orderValidator;
         this.orderRepository = orderRepository;
     }
+
+    public List<OrderSummary> getOrders(String loginUserName) {
+        return orderRepository.findByUserName(loginUserName).stream()
+                .toList();
+    }
+
 
     public CreateOrderResponse createOrder(String loginUserName, CreateOrderRequest request) {
         orderValidator.validateOrder(request);
@@ -54,8 +58,7 @@ public class OrderService {
                 log.info("Order {} can be delivered", order.getOrderNumber());
                 orderRepository.updateOrderStatus(order.getOrderNumber(), OrderStatus.DELIVERED);
                 orderEventService.saveDeliveredOrder(OrderEventMapper.buildOrderDeliveredEvent(order));
-            }
-            else {
+            } else {
                 log.error("Order {} cannot be delivered", order.getOrderNumber());
                 orderRepository.updateOrderStatus(order.getOrderNumber(), OrderStatus.CANCELLED);
                 orderEventService.saveCancelOrder(OrderEventMapper.buildOrderCancelledEvent(order, "Cannot deliver to this country"));
@@ -70,5 +73,11 @@ public class OrderService {
 
     private boolean canBeDelivered(OrderEntity order) {
         return DELIVERED_COUNTRIES.contains(order.getDeliveryAddress().country().toUpperCase());
+    }
+
+    public Optional<OrderDTO> getOrderSummary(String orderNumber, String loginUserName) {
+
+        return orderRepository.findByUserNameAndOrderNumber(loginUserName, orderNumber)
+                .map(OrderMapper::convertToDTO);
     }
 }

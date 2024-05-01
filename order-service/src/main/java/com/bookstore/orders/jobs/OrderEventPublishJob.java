@@ -20,7 +20,7 @@ public class OrderEventPublishJob {
         this.orderEventService = orderEventService;
     }
 
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "*/25 * * * * *")
     public void publishOrderEvents(){
         logger.info("Publishing order events at" + Instant.now());
         orderEventService.publishOrderEvents();
