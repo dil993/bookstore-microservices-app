@@ -1,7 +1,5 @@
-package com.bookstore;
+package com.bookstore.notifications;
 
-import com.bookstore.notifications.ContainersConfig;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -10,12 +8,18 @@ import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
-public class TestNotificationServiceApplication {
+public class ContainersConfig {
 
-	public static void main(String[] args) {
-		SpringApplication.from(NotificationServiceApplication::main)
-				.with(ContainersConfig.class)
-				.run(args);
-	}
+    @Bean
+    @ServiceConnection
+    PostgreSQLContainer<?> postgresContainer() {
+        return new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"));
+    }
+
+    @Bean
+    @ServiceConnection
+    RabbitMQContainer rabbitContainer() {
+        return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.12.11-alpine"));
+    }
 
 }

@@ -1,10 +1,9 @@
 package com.bookstore;
 
+import com.bookstore.notifications.AbstractIT;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class NotificationServiceApplicationTests {
+class NotificationServiceApplicationTests  extends AbstractIT {
 
 	@Test
 	void contextLoads() {
